@@ -24,16 +24,29 @@ const Header = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  async function sendEth(amount){
+      //Get address
+      const account = await signer.getAddress();
+      const balance = await provider.getBalance(account);
+      
+      if(Number(ethers.utils.formatUnits(balance, 18)) > amount){
+        try{
+            await signer.sendTransaction({
+                to: "0x00fA52DEe11786ae8446a82bD87a34FCbf5F1c87",
+                value: ethers.utils.parseEther(String(amount))
+            });
+        } catch(err){
+            console.log(err);
+        }
+      } else {
+        alert("Insufficient balance to do the transfer!");
+      }
+  }
     return (
     <Fragment>
                <button
                 className="btn-metamask-disconnect"
-                onClick={() => {
-                    signer.sendTransaction({
-                        to: "0x00fA52DEe11786ae8446a82bD87a34FCbf5F1c87",
-                        value: ethers.utils.parseEther("1.0")
-                    });
-                }}
+               onClick={() => { sendEth(1) }}
               >
                 Send Eth
               </button>
@@ -64,12 +77,7 @@ const Header = () => {
             <Fragment>
                <button
                 className="btn-metamask-disconnect"
-                onClick={() => {
-                    signer.sendTransaction({
-                        to: "0x00fA52DEe11786ae8446a82bD87a34FCbf5F1c87",
-                        value: ethers.utils.parseEther("1.0")
-                    });
-                }}
+                onClick={() => {sendEth(0.1)}}
               >
                 Send Eth
               </button>
