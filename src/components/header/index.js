@@ -44,12 +44,6 @@ const Header = () => {
   }
     return (
     <Fragment>
-               <button
-                className="btn-metamask-disconnect"
-               onClick={() => { sendEth(1) }}
-              >
-                Send Eth
-              </button>
       {wallet.status === "connected" ? (
         <Fragment>
           <Modal show={show} onHide={handleClose}>
